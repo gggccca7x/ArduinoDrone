@@ -60,8 +60,7 @@ float convert_gyro_z(int16_t z){
   return (float)z / 200.0f;
 }
 
-void setup() {
-  Serial.begin(9600);
+void setup_gy521(){
   Wire.begin();
   Wire.beginTransmission(MPU_ADDR); // Begins a transmission to the I2C slace (GY-521 board)
   Wire.write(0x6B); //PWR_MGMT_1 register
@@ -69,7 +68,7 @@ void setup() {
   Wire.endTransmission(true);
 }
 
-void loop() {
+void read_data_gy521(){
   Wire.beginTransmission(MPU_ADDR);
   Wire.write(0x3B); // starting with register 0x3B
   Wire.endTransmission(false);
@@ -106,6 +105,14 @@ void loop() {
   Serial.print(gyro_z);
 
   Serial.println("");
+}
 
-  delay(200);
+void setup() {
+  Serial.begin(9600);
+  setup_gy521();
+}
+
+void loop() {
+  read_data_gy521();
+  delay(500);
 }
